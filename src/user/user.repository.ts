@@ -1,8 +1,8 @@
 import { RepositoryInterface } from '../interfaces/Repository.interface';
 import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UserResponseDto } from './dtos/user.dto';
-import { user } from "@prisma/client";
+import { CreateUserDto } from './dtos/user.dto';
+import { user } from '@prisma/client';
 
 @Injectable()
 export class UserRepository implements RepositoryInterface {
@@ -43,14 +43,10 @@ export class UserRepository implements RepositoryInterface {
     return 'found';
   }
 
-  async findByEmail(email: string): Promise<UserResponseDto | null> {
+  async findByEmail(email: string): Promise<user | null> {
     const existedUser = await this.prismaService.user.findUnique({
       where: { email },
     });
-    if (existedUser) {
-      return new UserResponseDto(existedUser);
-    } else {
-      return null;
-    }
+    return existedUser;
   }
 }

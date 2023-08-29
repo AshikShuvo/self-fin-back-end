@@ -1,6 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto, UserResponseDto } from './dtos/user.dto';
 import { UserRepository } from './user.repository';
+import { user } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -11,7 +12,12 @@ export class UserService {
     if (existedUser) {
       throw new ConflictException();
     }
-    const newUser = await this.userRepository.create(data);
+    const newUser: user = await this.userRepository.create(data);
     return new UserResponseDto(newUser);
+  }
+
+  async findUserByEmail(email: string): Promise<user | null> {
+    const user = await this.userRepository.findByEmail(email);
+    return user;
   }
 }

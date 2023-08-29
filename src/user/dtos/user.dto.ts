@@ -89,6 +89,9 @@ export class UserResponseDto {
   phone: string;
 
   @Exclude()
+  password: string;
+
+  @Exclude()
   created_at: Date;
 
   @Exclude()
