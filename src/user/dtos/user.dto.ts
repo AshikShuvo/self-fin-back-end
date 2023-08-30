@@ -101,3 +101,9 @@ export class UserResponseDto {
     Object.assign(this, partial);
   }
 }
+
+export class RefreshTokenDto {
+  @IsNotEmpty()
+  @IsString()
+  refresh: string;
+}

@@ -1,4 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto, SigninDto } from '../dtos/user.dto';
 import * as bcrypt from 'bcryptjs';
 import { UserService } from '../user.service';
@@ -46,6 +50,25 @@ export class AuthService {
     return {
       access,
       refresh,
+    };
+  }
+
+  refreshUserAccessToken(refreshToken: string) {
+    //   check if valid jwt token
+    const payload = jwt.verify(refreshToken, process.env.JWT_TOKEN_KEY);
+    // if token not valid throw unauthorized exception
+    if (!payload) {
+      throw new UnauthorizedException();
+    }
+    //   generate a access token base on refresh token payload
+    const newAccessToken = this.generateJwtToken({
+      id: (payload as { id: string; email: string }).id,
+      email: (payload as { id: string; email: string }).email,
+    });
+    // return an object {access:string; refresh:string}
+    return {
+      access: newAccessToken,
+      refresh: refreshToken,
     };
   }
 
