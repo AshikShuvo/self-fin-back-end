@@ -7,9 +7,10 @@ import { PrismaService } from '../prisma/prisma.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '../jwt/jwt.module';
 import { JwtService } from '../jwt/jwt.service';
+import { UserController } from './user.controller';
 
 @Module({
-  controllers: [AuthController],
+  controllers: [AuthController, UserController],
   providers: [
     AuthService,
     UserService,

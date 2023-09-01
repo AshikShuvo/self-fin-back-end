@@ -1,7 +1,7 @@
 import { RepositoryInterface } from '../interfaces/Repository.interface';
 import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dtos/user.dto';
+import { CreateUserDto, UpdateUserDto } from './dtos/user.dto';
 import { user } from '@prisma/client';
 
 @Injectable()
@@ -31,16 +31,32 @@ export class UserRepository implements RepositoryInterface {
     return user;
   }
 
-  update(id: string, data: any): string {
-    return 'updated';
+  async update(id: string, data: UpdateUserDto): Promise<user | null> {
+    const { firstName, lastName, phone } = data;
+    const payload = {
+      ...(firstName && { first_name: firstName }),
+      ...(lastName && { last_name: lastName }),
+      ...(phone && { phone }),
+    };
+    const updatedUser = await this.prismaService.user.update({
+      data: payload,
+      where: { id },
+    });
+    if (!updatedUser) {
+      return null;
+    }
+    return updatedUser;
   }
 
   delete(id: string): string {
     return 'deleted';
   }
 
-  findById(id: string): string {
-    return 'found';
+  async findById(id: string): Promise<user | null> {
+    const existedUser = await this.prismaService.user.findUnique({
+      where: { id },
+    });
+    return existedUser;
   }
 
   async findByEmail(email: string): Promise<user | null> {

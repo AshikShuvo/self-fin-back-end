@@ -3,12 +3,18 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
-import { JwtModule } from "./jwt/jwt.module";
-import { JwtService } from "./jwt/jwt.service";
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { UserInterceptor } from './interceptors/user.interceptor';
 
 @Module({
   imports: [PrismaModule, UserModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: UserInterceptor,
+    },
+  ],
 })
 export class AppModule {}

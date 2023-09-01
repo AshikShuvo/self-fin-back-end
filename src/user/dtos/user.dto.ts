@@ -60,11 +60,6 @@ export class UpdateUserDto {
     message: 'phone must be a valid phone number',
   })
   phone: string;
-
-  @IsOptional()
-  @IsNotEmpty()
-  @IsString()
-  password: string;
 }
 
 export class UserResponseDto {
@@ -106,4 +101,9 @@ export class RefreshTokenDto {
   @IsNotEmpty()
   @IsString()
   refresh: string;
+}
+
+export class UserFromTokenDto {
+  id: string;
+  email: string;
 }
