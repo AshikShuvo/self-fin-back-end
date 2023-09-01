@@ -26,10 +26,14 @@ export class AuthService {
       phone,
       password: hashedPassword,
     });
-    return this.jwtService.generateAccessAndRefreshToken({
-      id: user.id,
-      email: user.email,
-    });
+    try {
+      return this.jwtService.generateAccessAndRefreshToken({
+        id: user.id,
+        email: user.email,
+      });
+    } catch (e) {
+      throw new HttpException('jwt service failed', 500);
+    }
   }
 
   async userSignin({ email, password }: SigninDto) {
@@ -42,13 +46,21 @@ export class AuthService {
     if (!isValidPassword) {
       throw new HttpException('credential dose not match', 400);
     }
-    return this.jwtService.generateAccessAndRefreshToken({
-      id: user.id,
-      email: user.email,
-    });
+    try {
+      return this.jwtService.generateAccessAndRefreshToken({
+        id: user.id,
+        email: user.email,
+      });
+    } catch (e) {
+      throw new HttpException('jwt service failed', 500);
+    }
   }
 
   refreshUserAccessToken(refreshToken: string) {
-    return this.jwtService.generateAccessTokenFromRefreshToken(refreshToken);
+    try {
+      return this.jwtService.generateAccessTokenFromRefreshToken(refreshToken);
+    } catch (e) {
+      throw new HttpException('jwt service failed', 500);
+    }
   }
 }
