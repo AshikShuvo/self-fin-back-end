@@ -9,6 +9,8 @@ import { JwtService } from '../jwt/jwt.service';
 import { UserController } from './user.controller';
 import { WalletModule } from '../wallet/wallet.module';
 import { WalletService } from '../wallet/wallet.service';
+import { HandcashService } from '../handcash/handcash.service';
+import { HandcashModule } from '../handcash/handcash.module';
 
 @Module({
   controllers: [AuthController, UserController],
@@ -19,7 +21,8 @@ import { WalletService } from '../wallet/wallet.service';
     PrismaService,
     JwtService,
     WalletService,
+    HandcashService,
   ],
-  imports: [JwtModule, WalletModule],
+  imports: [JwtModule, WalletModule, HandcashModule],
 })
 export class UserModule {}

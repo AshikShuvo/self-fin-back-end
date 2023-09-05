@@ -34,6 +34,15 @@ export class WalletRepository implements RepositoryInterface {
       where: {
         user_id: id,
       },
+      include: {
+        handCash: {
+          include: {
+            deposit: true,
+            spent: true,
+          },
+        },
+        bankAccount: true,
+      },
     });
   }
 
