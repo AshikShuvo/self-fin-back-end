@@ -13,7 +13,16 @@ export class WalletRepository implements RepositoryInterface {
   }
 
   create(data: CreateWalletDto): Promise<wallet> {
-    return this.prismaService.wallet.create({ data });
+    return this.prismaService.wallet.create({
+      data: {
+        ...(data.name && { name: data.name }),
+        user: {
+          connect: {
+            id: data.user_id,
+          },
+        },
+      },
+    });
   }
 
   findById(id: string): Promise<wallet> {

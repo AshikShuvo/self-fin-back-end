@@ -6,9 +6,10 @@ import { UserModule } from './user/user.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { UserInterceptor } from './interceptors/user.interceptor';
 import { WalletModule } from './wallet/wallet.module';
+import { HandcashModule } from './handcash/handcash.module';
 
 @Module({
-  imports: [PrismaModule, UserModule, WalletModule],
+  imports: [PrismaModule, UserModule, WalletModule, HandcashModule],
   controllers: [AppController],
   providers: [
     AppService,

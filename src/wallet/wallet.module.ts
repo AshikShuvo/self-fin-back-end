@@ -5,5 +5,6 @@ import { WalletRepository } from './wallet.repository';
 
 @Module({
   providers: [WalletService, PrismaService, WalletRepository],
+  exports: [WalletService, WalletRepository],
 })
 export class WalletModule {}

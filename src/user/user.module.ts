@@ -1,13 +1,14 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { UserService } from './user.service';
 import { UserRepository } from './user.repository';
 import { PrismaService } from '../prisma/prisma.service';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '../jwt/jwt.module';
 import { JwtService } from '../jwt/jwt.service';
 import { UserController } from './user.controller';
+import { WalletModule } from '../wallet/wallet.module';
+import { WalletService } from '../wallet/wallet.service';
 
 @Module({
   controllers: [AuthController, UserController],
@@ -17,7 +18,8 @@ import { UserController } from './user.controller';
     UserRepository,
     PrismaService,
     JwtService,
+    WalletService,
   ],
-  imports: [JwtModule],
+  imports: [JwtModule, WalletModule],
 })
 export class UserModule {}

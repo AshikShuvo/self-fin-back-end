@@ -6,10 +6,14 @@ import {
 import { CreateUserDto, UpdateUserDto, UserResponseDto } from './dtos/user.dto';
 import { UserRepository } from './user.repository';
 import { user } from '@prisma/client';
+import { WalletService } from '../wallet/wallet.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly walletService: WalletService,
+  ) {}
 
   async createUser(data: CreateUserDto) {
     const existedUser = await this.userRepository.findByEmail(data.email);
@@ -17,6 +21,10 @@ export class UserService {
       throw new ConflictException();
     }
     const newUser: user = await this.userRepository.create(data);
+    await this.walletService.createWallet({
+      name: newUser.first_name + ' wallet',
+      user_id: newUser.id,
+    });
     return new UserResponseDto(newUser);
   }
 
