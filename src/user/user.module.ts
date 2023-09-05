@@ -16,10 +16,6 @@ import { UserController } from './user.controller';
     UserService,
     UserRepository,
     PrismaService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor,
-    },
     JwtService,
   ],
   imports: [JwtModule],

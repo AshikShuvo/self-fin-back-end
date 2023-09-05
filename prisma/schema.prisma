@@ -19,4 +19,71 @@ model user {
   password   String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  wallet     wallet?
+}
+
+model wallet {
+  id          String        @id @default(uuid())
+  name        String?
+  user        user          @relation(fields: [user_id], references: [id])
+  user_id     String        @unique
+  handCash    handCash?
+  bankAccount bankAccount[]
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+}
+
+model handCash {
+  id         String    @id @default(uuid())
+  name       String?
+  wallet     wallet    @relation(fields: [wallet_id], references: [id])
+  wallet_id  String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deposit    deposit[]
+  spent      spent[]
+}
+
+model bankAccount {
+  id                  String       @id @default(uuid())
+  bank_name           String
+  bank_account_number String
+  wallet              wallet       @relation(fields: [wallet_id], references: [id])
+  wallet_id           String
+  created_at          DateTime     @default(now())
+  updated_at          DateTime     @updatedAt
+  deposit             deposit[]
+  withdrawal          withdrawal[]
+  spent               spent[]
+}
+
+model deposit {
+  id             String       @id @default(uuid())
+  ammount        Float
+  bank_account   bankAccount? @relation(fields: [bankAccount_id], references: [id])
+  bankAccount_id String?
+  hand_cash      handCash?    @relation(fields: [handCash_id], references: [id])
+  handCash_id    String?
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
+}
+
+model withdrawal {
+  id             String      @id @default(uuid())
+  ammount        Float
+  bank_account   bankAccount @relation(fields: [bankAccount_id], references: [id])
+  bankAccount_id String
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @updatedAt
+}
+
+model spent {
+  id             String       @id @default(uuid())
+  ammount        Float
+  bank_account   bankAccount? @relation(fields: [bankAccount_id], references: [id])
+  bankAccount_id String?
+  hand_cash      handCash?    @relation(fields: [handCash_id], references: [id])
+  handCash_id    String?
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
 }
